@@ -27,7 +27,7 @@ public class FileUtils {
 
     private static final String LOG_TAG = FileUtils.class.getSimpleName();
 
-    private final static String[] EXTENSION_WHITELIST = new String[]{"wav", "mp3", "ogg"};
+    private final static String[] EXTENSION_WHITELIST = new String[]{"wav", "mp3", "ogg", "opus"};
 
     private final static String TYPE_SOUND = "Sound";
 
@@ -63,6 +63,37 @@ public class FileUtils {
     }
 
     public static String getInternalPath(Context context, File file) {
+
+        // Choose file name right here!
+        /*
+        // Choose name.
+        final TextView resultText = new TextView(this);
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(MainActivity.this);
+        final EditText editText = new EditText(this);
+        // setup a dialog window
+        alertDialogBuilder
+                .setCancelable(false)
+                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        resultText.setText(editText.getText());
+                    }
+                })
+                .setNegativeButton("Cancel",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                dialog.cancel();
+                            }
+                        });
+
+        // create an alert dialog
+        AlertDialog alert = alertDialogBuilder.create();
+        alert.show();
+
+        String name = resultText.getText().toString();
+        if(name.isEmpty())
+            name = file.getName();
+*/
+
         return getInternalPath(context, file.getName());
     }
 

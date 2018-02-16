@@ -6,6 +6,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.media.SoundPool;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -16,9 +17,14 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.Html;
+import android.text.InputType;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.File;
@@ -50,8 +56,10 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar((Toolbar) findViewById(R.id.toolbar));
         init();
 
-        // We were called by a view intent from another app
-        if (Intent.ACTION_VIEW.equals(getIntent().getAction())) {
+
+        if (Intent.ACTION_SEND.equals(getIntent().getAction()) ||
+            Intent.ACTION_VIEW.equals(getIntent().getAction()))
+        {
             onSendFile(getIntent());
         }
     }
@@ -174,11 +182,12 @@ public class MainActivity extends AppCompatActivity {
 
     private void onSendFile(Intent intent) {
         if (intent.getType() != null && intent.getType().startsWith("audio/")) {
-            File newFile = new File(intent.getData().getPath());
+            final Uri uri = intent.getParcelableExtra(Intent.EXTRA_STREAM);
+            File newFile = new File(uri.getPath());
             if (FileUtils.existsInternalFile(this, newFile.getName())) {
                 Toast.makeText(this, getString(R.string.error_entry_exists), Toast.LENGTH_LONG).show();
-            } else if (!(onFileAdded(new File(intent.getData().getPath())))) {
-                Toast.makeText(this, getString(R.string.error_add, intent.getData().getPath()), Toast.LENGTH_LONG).show();
+            } else if (!(onFileAdded(new File(uri.getPath())))) {
+                Toast.makeText(this, getString(R.string.error_add, uri.getPath()), Toast.LENGTH_LONG).show();
             }
         }
     }
